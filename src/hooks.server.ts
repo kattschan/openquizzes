@@ -49,7 +49,6 @@ const supabase: Handle = async ({ event, resolve }) => {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
 		if (!session) {
-			console.error('ERROR no session');
 			return { session: null, user: null };
 		}
 
@@ -82,12 +81,10 @@ const authGuard: Handle = async ({ event, resolve }) => {
 	event.locals.user = user;
 
 	if (!event.locals.session && event.url.pathname.startsWith('/dashboard')) {
-		console.error('attempted to hit dash but no session');
 		redirect(303, '/auth/login');
 	}
 
 	if (event.locals.session && event.url.pathname === '/auth/login') {
-		console.error('attempted to hit login but has session');
 		redirect(303, '/dashboard');
 	}
 
